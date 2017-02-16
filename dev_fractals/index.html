@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" >
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>IDFAPP</title>
+	
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+
+    <script type="text/javascript" src="js/libs/threejs/three.js"></script>
+	<script type="text/javascript" src="js/libs/threejs/OrbitControls.js"></script>
+	<script type="text/javascript" src="js/libs/threejs/OBJLoader.js"></script>
+
+
+    <script type="text/javascript" src="js/idfapp.js"></script>
+    <script type="text/javascript" src="js/idfapp/core.js"></script>
+    <script type="text/javascript" src="js/idfapp/view3d.js"></script>
+    <script type="text/javascript" src="js/idfapp/scene.js"></script>
+    <script type="text/javascript" src="js/idfapp/ui.js"></script>
+</head>
+<body>
+<div class="cd-wrapper" id="root">
+	<div id="view3d" class="view3d"></div>
+</div>
+
+<script type="text/javascript">
+	var app = new IDFAPP.Core({
+		view3d_container: 'view3d',
+		events_wrapper: 'root'
+	});
+</script>
+</body>
+</html>
