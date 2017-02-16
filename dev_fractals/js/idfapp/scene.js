@@ -1,9 +1,11 @@
+/* global IDFAPP, THREE */
+
 IDFAPP.Scene = function (view3d) {
     THREE.Scene.call(this);
 
     this.view3d = view3d;
     this.camera = null;
-	this.target = null;
+    this.target = null;
     this.is_mousedown = false;
 
     this.cwidget = null;
@@ -15,8 +17,8 @@ IDFAPP.Scene = function (view3d) {
 
     this.grid = null;
 
-	this.hit_plane = new THREE.Plane(new THREE.Vector3(0.0, 0.0, 1.0), 0);
-	this.cam_direction = new THREE.Vector3();
+    this.hit_plane = new THREE.Plane(new THREE.Vector3(0.0, 0.0, 1.0), 0);
+    this.cam_direction = new THREE.Vector3();
 
     this.setupCamera(IDFAPP.VIEW3D_DEFAULT_CAMERA_POS, IDFAPP.VIEW3D_DEFAULT_CAMERA_TARGET, IDFAPP.VIEW3D_WIDTH / IDFAPP.VIEW3D_HEIGHT);
     this.setupLights();
@@ -32,7 +34,7 @@ IDFAPP.Scene.prototype.setupCamera = function (pos, target, aspect) {
     this.camera = new THREE.PerspectiveCamera(IDFAPP.VIEW3D_VIEW_ANGLE, aspect, IDFAPP.VIEW3D_NEAR, IDFAPP.VIEW3D_FAR);
     this.camera.position.copy(pos);
     this.camera.lookAt(target);
-	this.target = target;
+    this.target = target;
     this.add(this.camera);
 };
 
@@ -65,7 +67,7 @@ IDFAPP.Scene.prototype.setupLights = function () {
 
 IDFAPP.Scene.prototype.create = function () {
     this.addGrid();
-	this.addTestCube(1.0);
+    //this.addTestCube(1.0);
 };
 
 
@@ -74,6 +76,8 @@ IDFAPP.Scene.prototype.addGrid = function () {
     this.grid = new THREE.GridHelper(10, 1);
 //    this.grid.setColors(0xffffff, 0xffffff);
     this.grid.visible = true;
+    
+    this.add(new IDFAPP.FractalLSystem(5));
 
     this.add(this.grid);
 };
@@ -81,15 +85,17 @@ IDFAPP.Scene.prototype.addGrid = function () {
 
 
 IDFAPP.Scene.prototype.addTestCube = function (size, pos) {
-	var geometry = new THREE.BoxGeometry( 2, 2, 2 );
-	var material = new THREE.MeshLambertMaterial( {color: 0x00ff00} );
-	var cube = new THREE.Mesh( geometry, material );
+    var geometry = new THREE.BoxGeometry(2, 2, 2);
+    var material = new THREE.MeshLambertMaterial({color: 0x00ff00});
+    var cube = new THREE.Mesh(geometry, material);
 
-	if (pos) cube.position.copy(pos);
-	if (size) cube.scale.multiplyScalar(size);
+    if (pos)
+        cube.position.copy(pos);
+    if (size)
+        cube.scale.multiplyScalar(size);
 
-	this.add( cube );
-	this.addSelectionTarget(cube);
+    this.add(cube);
+    this.addSelectionTarget(cube);
 };
 
 
@@ -115,8 +121,8 @@ IDFAPP.Scene.prototype.handleInput = function (evt, pos) {
             break;
         case 'mousedown':
             this.is_mousedown = true;
-			var pos = this.getPlaneHitPos(pos.nx, pos.ny);
-			this.addTestCube(0.2, pos);
+            var pos = this.getPlaneHitPos(pos.nx, pos.ny);
+            //this.addTestCube(0.2, pos);
             break;
         case 'mouseup':
             this.is_mousedown = false;
@@ -139,11 +145,11 @@ IDFAPP.Scene.prototype.selectElement = function (npos) {
 
 
 IDFAPP.Scene.prototype.getPlaneHitPos = function (nx, ny) {
-	this.cam_direction.subVectors(this.target, this.camera.position);
-	this.cam_direction.normalize();
-	this.hit_plane.set(this.cam_direction, 0);
+    this.cam_direction.subVectors(this.target, this.camera.position);
+    this.cam_direction.normalize();
+    this.hit_plane.set(this.cam_direction, 0);
 
-	this.raycaster.setFromCamera(this.mouse, this.camera);
-	return this.raycaster.ray.intersectPlane(this.hit_plane);
+    this.raycaster.setFromCamera(this.mouse, this.camera);
+    return this.raycaster.ray.intersectPlane(this.hit_plane);
 };
 
