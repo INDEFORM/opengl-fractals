@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>IDFAPP</title>
-	
+
     <link rel="stylesheet" type="text/css" href="css/style.css"/>
 
     <script type="text/javascript" src="js/libs/threejs/three.js"></script>
@@ -17,6 +17,9 @@
     <script type="text/javascript" src="js/idfapp/view3d.js"></script>
     <script type="text/javascript" src="js/idfapp/scene.js"></script>
     <script type="text/javascript" src="js/idfapp/ui.js"></script>
+
+    <script type="text/javascript" src="js/idfapp/fractal-builder.js"></script>
+    <script type="text/javascript" src="js/idfapp/fractal-builder_aln.js"></script>
 </head>
 <body>
 <div class="cd-wrapper" id="root">
@@ -28,6 +31,8 @@
 		view3d_container: 'view3d',
 		events_wrapper: 'root'
 	});
+
+    app.createFractal('fractal-builder_aln', {});
 </script>
 </body>
 </html>
