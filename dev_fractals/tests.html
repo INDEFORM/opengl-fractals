@@ -17,6 +17,13 @@ and open the template in the editor.
         <script type="text/javascript" src="js/testing/test-builder.js"></script>
         <script type="text/javascript" src="js/testing/base-test.js"></script>
 
+        <!-- Test sources -->
+        <script type="text/javascript">
+            IDFAPP = this.IDFAPP || {}; // Fake namespace.
+            IDFAPP.FractalBuilder = this.IDFAPP.FractalBuilder || function () {};
+        </script>
+        <script type="text/javascript" src="js/idfapp/fractals/l-system.js"></script>
+
         <!-- Tests -->
         <script type="text/javascript" src="js/testing/tests/tests.l-system.js"></script>
 

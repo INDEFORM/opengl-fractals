@@ -38,21 +38,21 @@ IDFAPP.FractalLSystem.prototype.generate = function () {
 };
 
 
-IDFAPP.FractalLSystem.prototype._generateAxiomTree = function () {
-    var tree = this._params.rules.axiom;
+IDFAPP.FractalLSystem.prototype._generateAxiomTree = function (params) {
+    var tree = params.rules.axiom;
 
     //Create iterations
-    for (var i = 0; i < this._params.iterations; i++) {
+    for (var i = 0; i < params.iterations; i++) {
         var m = tree.length;
         var extension = "";
         for (var j = 0; j < m; j++) {
             var isSub = tree[j].match("[0-9]");
             if (isSub) {
-                extension += (this._params.rules.secondary[parseInt(isSub[0]) || 0]) || "";
+                extension += (params.rules.secondary[parseInt(isSub[0]) || 0]) || "";
             } else {
                 switch (tree[j]) {
                     case "F":
-                        extension += this._params.rules.main;
+                        extension += params.rules.main;
                         break;
                     default:
                         extension += tree[j];
@@ -63,14 +63,13 @@ IDFAPP.FractalLSystem.prototype._generateAxiomTree = function () {
         tree = extension;
     }
 
-    console.log(tree);
     return tree;
 };
 
 IDFAPP.FractalLSystem.prototype._construct = function (geometry, initial) {
     initial = initial || new THREE.Vector3();
 
-    var axiomTree = this._generateAxiomTree();
+    var axiomTree = this._generateAxiomTree(this._params);
 
     var stack = {
         angle: [],
