@@ -18,7 +18,8 @@ Testing.TestBuilder.prototype = {
     },
     run: function () {
         for (var i = 0; i < this._tests.length; i++) {
-            QUnit.test(this._tests[i].getName(), this._tests[i].getCase);
+            var test = this._tests[i];
+            QUnit.test(test.getName(), test.getCase.bind(test));
         }
     }
 };
