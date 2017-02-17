@@ -202,3 +202,64 @@ Testing.TestLSystemGenSimple2.prototype = Object.create(Testing.BaseTestCase.pro
         }
     }
 });
+
+/*
+ * Tests complex construction.
+ */
+Testing.TestLSystemGenComplex1 = function () {
+    Testing.BaseTestCase.call(this, "Complex L-System Construction 1");
+};
+Testing.TestLSystemGenComplex1.prototype = Object.create(Testing.BaseTestCase.prototype, {
+    constructor: {
+        writable: false, configurable: false, value: Testing.TestLSystemGenComplex1
+    },
+    getCase: {
+        writable: true, configurable: true, value: function (assert) {
+            var vertices = IDFAPP.FractalLSystem.prototype._construct.call({
+                _generateAxiomTree: IDFAPP.FractalLSystem.prototype._generateAxiomTree.bind(this)
+            }, {
+                rules: {
+                    axiom: "F",
+                    main: "F+[F[LFF0]]",
+                    secondary: ["FF-F1", "-F+F|+FF"]
+                },
+                iterations: 2,
+                scale: 1,
+                theta: 45,
+                angle: 0
+            }, new THREE.Geometry()).vertices;
+
+            assert.ok(vertices.length === 48, "There must be 48 vertices.");
+
+            var expected = [
+                [0, 0, 0], [1, 1, 0], [1, 1, 0],
+                [1.707, 2, 0.707], [1.707, 2, 0.707], [1.707, 3, 0.707],
+                [1.707, 2, 0.707], [2.414, 3, 1.414], [2.414, 3, 1.414],
+                [3.121, 4, 2.121], [1, 1, 0], [1, 2, 1],
+                [1, 2, 1], [0.292, 3, 1.707], [0.292, 3, 1.707],
+                [-0.164, 3.853, 1.457], [0.292, 3, 1.707], [-0.414, 4, 2.414],
+                [-0.414, 4, 2.414], [-1.121, 5, 3.121], [1, 2, 1],
+                [0.146, 2.5, 0.853], [1, 2, 1], [0.292, 3, 1.707],
+                [0.292, 3, 1.707], [-0.707, 4, 1.707], [-0.707, 4, 1.707],
+                [-1.560, 4.146, 1.207], [-0.707, 4, 1.707], [-1.707, 5, 1.707],
+                [-1.707, 5, 1.707], [-2.707, 6, 1.707], [0.292, 3, 1.707],
+                [-0.707, 4, 1.707], [-0.707, 4, 1.707], [-1.414, 5, 1],
+                [-1.414, 5, 1], [-2.121, 5, 0.292], [-1.414, 5, 1],
+                [-2.121, 6, 0.292], [-2.121, 6, 0.292], [-2.828, 7, -0.414],
+                [-0.707, 4, 1.707], [-1.414, 5, 1], [-1.414, 5, 1],
+                [-2.121, 6, 0.292], [-2.121, 6, 0.292], [-3.121, 7, 0.292]
+            ];
+
+            var o = [];
+
+            for (var i = 0; i < vertices.length; i++) {
+                var v = [vertices[i].x, vertices[i].y, vertices[i].z];
+
+                o.push(v);
+                assert.ok(Testing.compare(v, expected[i], 1E-3), "Vertex must be at correct position up to 3 decimal points.");
+            }
+
+            console.log(o);
+        }
+    }
+});
