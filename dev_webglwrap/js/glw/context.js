@@ -37,6 +37,7 @@ GLW.Context.prototype.render = function (scene) {
 	}
 	
 	var camera = scene.camera;
+	camera.calculateFrustumMatrix();
 	var cam_mtx = camera.global_inverse_matrix;
 	var fr_mtx = camera.frustum_matrix;
 	cam_mtx = fr_mtx.multiply(cam_mtx);

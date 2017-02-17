@@ -10,7 +10,7 @@ GLW.Camera = function (fov) {
 GLW.Camera.prototype = Object.create(GLW.Object.prototype);
 GLW.Camera.prototype.constructor = GLW.Camera;
 
-GLW.Camera.prototype.calculateProjectionMatrix = function () {
+GLW.Camera.prototype.calculateFrustumMatrix = function () {
 	var near_d = this.near_dist, far_d = this.far_dist;
 	var wmult = Math.tan(this.fov/2);
 	var near_w = near_d*wmult, far_w = far_d*wmult;
