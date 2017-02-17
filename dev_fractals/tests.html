@@ -26,6 +26,7 @@ and open the template in the editor.
         <script type="text/javascript" src="js/idfapp/fractals/l-system.js"></script>
 
         <!-- Tests -->
+        <script type="text/javascript" src="js/testing/tests/tests.generic.js"></script>
         <script type="text/javascript" src="js/testing/tests/tests.l-system.js"></script>
 
     </head>
@@ -34,6 +35,16 @@ and open the template in the editor.
 
         <script type="text/javascript">
             new Testing.TestBuilder()
+                    .addTest(new Testing.TestUtilsIsZero1())
+                    .addTest(new Testing.TestUtilsIsZero2())
+                    .addTest(new Testing.TestUtilsIsZero3())
+                    .addTest(new Testing.TestUtilsIsNotZero1())
+                    .addTest(new Testing.TestUtilsIsNotZero2())
+                    .addTest(new Testing.TestUtilsCompare1())
+                    .addTest(new Testing.TestUtilsCompare2())
+                    .addTest(new Testing.TestUtilsCompare3())
+                    .addTest(new Testing.TestUtilsCompare4())
+                    .addTest(new Testing.TestUtilsCompare5())
                     .addTest(new Testing.TestLSystemSimple())
                     .addTest(new Testing.TestLSystemSimple2())
                     .addTest(new Testing.TestLSystemSimple3())

@@ -4,7 +4,7 @@
  * Tests simple axiom with no iterations.
  */
 Testing.TestLSystemSimple = function () {
-    Testing.BaseTestCase.call(this, "Simple L-System");
+    Testing.BaseTestCase.call(this, "L-System: Simple tree construction 1");
 };
 Testing.TestLSystemSimple.prototype = Object.create(Testing.BaseTestCase.prototype, {
     constructor: {
@@ -27,7 +27,7 @@ Testing.TestLSystemSimple.prototype = Object.create(Testing.BaseTestCase.prototy
  * Tests simple axiom with 1 iteration.
  */
 Testing.TestLSystemSimple2 = function () {
-    Testing.BaseTestCase.call(this, "Simple L-System 2");
+    Testing.BaseTestCase.call(this, "L-System: Simple tree construction 2");
 };
 Testing.TestLSystemSimple2.prototype = Object.create(Testing.BaseTestCase.prototype, {
     constructor: {
@@ -53,7 +53,7 @@ Testing.TestLSystemSimple2.prototype = Object.create(Testing.BaseTestCase.protot
  * Tests simple axiom with 2 iteration.
  */
 Testing.TestLSystemSimple3 = function () {
-    Testing.BaseTestCase.call(this, "Simple L-System 3");
+    Testing.BaseTestCase.call(this, "SL-System: Simple tree construction 3");
 };
 Testing.TestLSystemSimple3.prototype = Object.create(Testing.BaseTestCase.prototype, {
     constructor: {
@@ -79,7 +79,7 @@ Testing.TestLSystemSimple3.prototype = Object.create(Testing.BaseTestCase.protot
  * Tests tree generation with sub branches
  */
 Testing.TestLSystemSubBranch1 = function () {
-    Testing.BaseTestCase.call(this, "Simple L-System Sub Branch 1");
+    Testing.BaseTestCase.call(this, "L-System: Simple sub tree construction 1");
 };
 Testing.TestLSystemSubBranch1.prototype = Object.create(Testing.BaseTestCase.prototype, {
     constructor: {
@@ -106,7 +106,7 @@ Testing.TestLSystemSubBranch1.prototype = Object.create(Testing.BaseTestCase.pro
  * Tests tree generation with sub sub branches
  */
 Testing.TestLSystemSubBranch2 = function () {
-    Testing.BaseTestCase.call(this, "Simple L-System Sub Branch 2");
+    Testing.BaseTestCase.call(this, "L-System: Simple sub tree construction 2");
 };
 Testing.TestLSystemSubBranch2.prototype = Object.create(Testing.BaseTestCase.prototype, {
     constructor: {
@@ -133,7 +133,7 @@ Testing.TestLSystemSubBranch2.prototype = Object.create(Testing.BaseTestCase.pro
  * Tests simple construction.
  */
 Testing.TestLSystemGenSimple1 = function () {
-    Testing.BaseTestCase.call(this, "Simple L-System Construction 1");
+    Testing.BaseTestCase.call(this, "L-System: Simple tree generation 1");
 };
 Testing.TestLSystemGenSimple1.prototype = Object.create(Testing.BaseTestCase.prototype, {
     constructor: {
@@ -162,7 +162,7 @@ Testing.TestLSystemGenSimple1.prototype = Object.create(Testing.BaseTestCase.pro
  * Tests simple construction.
  */
 Testing.TestLSystemGenSimple2 = function () {
-    Testing.BaseTestCase.call(this, "Simple L-System Construction 2");
+    Testing.BaseTestCase.call(this, "L-System: Simple tree generation 2");
 };
 Testing.TestLSystemGenSimple2.prototype = Object.create(Testing.BaseTestCase.prototype, {
     constructor: {
@@ -207,7 +207,7 @@ Testing.TestLSystemGenSimple2.prototype = Object.create(Testing.BaseTestCase.pro
  * Tests complex construction.
  */
 Testing.TestLSystemGenComplex1 = function () {
-    Testing.BaseTestCase.call(this, "Complex L-System Construction 1");
+    Testing.BaseTestCase.call(this, "L-System: Complex tree generation 1");
 };
 Testing.TestLSystemGenComplex1.prototype = Object.create(Testing.BaseTestCase.prototype, {
     constructor: {
@@ -250,16 +250,11 @@ Testing.TestLSystemGenComplex1.prototype = Object.create(Testing.BaseTestCase.pr
                 [-2.121, 6, 0.292], [-2.121, 6, 0.292], [-3.121, 7, 0.292]
             ];
 
-            var o = [];
-
             for (var i = 0; i < vertices.length; i++) {
                 var v = [vertices[i].x, vertices[i].y, vertices[i].z];
 
-                o.push(v);
                 assert.ok(Testing.compare(v, expected[i], 1E-3), "Vertex must be at correct position up to 3 decimal points.");
             }
-
-            console.log(o);
         }
     }
 });
