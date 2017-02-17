@@ -29,21 +29,25 @@ Testing = this.Testing || {
 
         for (var i = 0; i < x.length; i++)
             result &= (x[i] + eps) > y[i] && (x[i] - eps) < y[i];
-        
+
         return result;
     }
 };
 
-Testing.TestBuilder = function () {
+Testing.TestBuilder = function (perf) {
     this._tests = [];
+    this._perfTests = [];
+    this._domPerf = perf;
 };
 
 Testing.TestBuilder.prototype = {
     addTest: function (test) {
-        if (!(test instanceof Testing.BaseTestCase)) {
-            console.warn("Element is not a test case.");
-        } else {
+        if (test instanceof Testing.BaseTestCase) {
             this._tests.push(test);
+        } else if (test instanceof Testing.BasePerformanceTest) {
+            this._perfTests.push(test);
+        } else {
+            console.warn("Object is not a test case.");
         }
 
         return this;
@@ -53,5 +57,26 @@ Testing.TestBuilder.prototype = {
             var test = this._tests[i];
             QUnit.test(test.getName(), test.getCase.bind(test));
         }
+
+        this._domPerf.innerHTML = this._perfTests.length > 0
+                ? "<h2>Running performance tests...</h2>"
+                : "<h2>No performance tests to run.</h2>";
+
+        setTimeout(function () {
+            var total = 0;
+
+            for (var i = 0; i < this._perfTests.length; i++) {
+                var test = this._perfTests[i];
+                var result = test.runTest();
+                total += result;
+                this._domPerf.innerHTML += "Perfomance test: '" + test.getName() +
+                        "' ran in " + result.toFixed(2) + "ms<br>";
+            }
+
+            if (this._perfTests.length > 0) {
+                this._domPerf.innerHTML += "<h3>All Performance tests finished in " +
+                        total.toFixed(2) + "ms.<h3>";
+            }
+        }.bind(this), 1000);
     }
 };
