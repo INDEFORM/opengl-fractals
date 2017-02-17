@@ -35,14 +35,14 @@
 				
 				geometry = new GLW.Geometry();
 				geometry.newAttribute('position', new Float32Array([
-					-1, -1, -0.1,
-					-1, -1,  0.1,
-					-1,  1, -0.1,
-					-1,  1,  0.1,
-					 1, -1, -0.1,
-					 1, -1,  0.1,
-					 1,  1, -0.1,
-					 1,  1,  0.1
+					-1, -1, -1,
+					-1, -1,  1,
+					-1,  1, -1,
+					-1,  1,  1,
+					 1, -1, -1,
+					 1, -1,  1,
+					 1,  1, -1,
+					 1,  1,  1
 				]));
 				geometry.indices = new Uint16Array([
 					0, 1, 2,
@@ -62,12 +62,13 @@
 				mesh = new GLW.Mesh(geometry, material);
 				scene.objects.add(mesh);
 				
-				camera.position = new matrix.Vector([0, 0, -5]);
+				camera.position = new matrix.Vector([0, 0, 3]);
 				
 				requestAnimationFrame(renderTest);
 			}
 			
 			function renderTest() {
+				camera.position.data[0] = 2*Math.sin(Date.now()*0.001);
 				context.render(scene);
 				
 				requestAnimationFrame(renderTest);
