@@ -38,7 +38,6 @@ GLW.Context.prototype.render = function (scene) {
 	var cam_mtx = camera.global_inverse_matrix;
 	var fr_mtx = camera.frustum_matrix;
 	cam_mtx = fr_mtx.multiply(cam_mtx);
-	cam_mtx = GLW.Context.flattenArray(cam_mtx.transpose());
 	
 	for (let object of objects) {
 		if (object instanceof GLW.Mesh) {
@@ -82,17 +81,19 @@ GLW.Context.prototype.renderObject = function (object, cam_mtx) {
 		}
 	}
 	
-	for (let [uni_name, mtrl_uni] of material.uniforms) {
+	for (var uni_name in material.uniforms) {
+		var uni_val = material.uniforms[uni_name];
 		var prg_uni = material.program_uniforms[uni_name];
 		if (prg_uni) {
 			var uni_loc = material.uniform_locations[uni_name];
-			var size = GLW.Context.getActiveSize(glc, uni_attr);
-			
+			var size = GLW.Context.getActiveSize(glc, prg_uni);
+			this.setUniformValue(uni_loc, prg_uni, uni_val);
 		}
 	}
 	
-	var gl_obj_matrix = WGLW.flattenArray(obj_mat.transpose().data);
-	glc.uniformMatrix4fv(this.uniforms.mesh.obj_matrix, false, new Float32Array(gl_obj_matrix));
+	var obj_mtx = object.global_matrix;
+	var mdlv_mtx = cam_mtx.multiply(obj_mtx);
+	this.setUniformValue(material.uniform_locations['modelViewMatrix'], material.program_uniforms['modelViewMatrix'], mdlv);
 	
 	glc.drawElements(glc.TRIANGLES, geometry.index_count, glc.UNSIGNED_SHORT, 0);
 	
@@ -132,6 +133,87 @@ GLW.Context.getActiveSize = function (glc, active) {
 	}
 	
 	return typesize*active.size
+};
+
+GLW.Context.prototype.setUniformValue = function (uni_loc, prg_uni, uni_val) {
+	if (!prg_uni) return;
+	
+	var glc = this._glcontext;
+	
+	var data;
+	
+	if (uni_val instanceof matrix.Matrix) {
+		uni_val = uni_val.transpose();
+		data = GLW.Context.flattenArray(uni_val.data);
+	} else if (uni_val instanceof matrix.Vector) {
+		data = uni_val.data;
+	} else if (!(uni_val instanceof Array)) {
+		data = [uni_val];
+	} else {
+		data = uni_val;
+	}
+	
+	switch (prg_uni.type) {
+		case glc.FLOAT:
+		case glc.FLOAT_VEC2:
+		case glc.FLOAT_VEC3:
+		case glc.FLOAT_VEC4:
+		case glc.FLOAT_MAT2:
+		case glc.FLOAT_MAT3:
+		case glc.FLOAT_MAT4:
+			data = new Float32Array(data);
+			break;
+		case glc.INT:
+		case glc.INT_VEC2:
+		case glc.INT_VEC3:
+		case glc.INT_VEC4:
+		case glc.BOOL:
+		case glc.BOOL_VEC2:
+		case glc.BOOL_VEC3:
+		case glc.BOOL_VEC4:
+			data = new Int32Array(data);
+			break;
+	}
+	
+	switch (prg_uni.type) {
+		case glc.FLOAT:
+			glc.uniform1fv(uni_loc, data);
+			break;
+		case glc.FLOAT_VEC2:
+			glc.uniform2fv(uni_loc, data);
+			break;
+		case glc.FLOAT_VEC3:
+			glc.uniform3fv(uni_loc, data);
+			break;
+		case glc.FLOAT_VEC4:
+			glc.uniform4fv(uni_loc, data);
+			break;
+		case glc.FLOAT_MAT2:
+			glc.uniformMatrix2fv(uni_loc, false, data);
+			break;
+		case glc.FLOAT_MAT3:
+			glc.uniformMatrix3fv(uni_loc, false, data);
+			break;
+		case glc.FLOAT_MAT4:
+			glc.uniformMatrix4fv(uni_loc, false, data);
+			break;
+		case glc.INT:
+		case glc.BOOL:
+			glc.uniform1iv(uni_loc, data);
+			break;
+		case glc.INT_VEC2:
+		case glc.BOOL_VEC2:
+			glc.uniform2iv(uni_loc, data);
+			break;
+		case glc.INT_VEC3:
+		case glc.BOOL_VEC3:
+			glc.uniform3iv(uni_loc, data);
+			break;
+		case glc.INT_VEC4:
+		case glc.BOOL_VEC4:
+			glc.uniform4iv(uni_loc, data);
+			break;
+	}
 };
 
 GLW.Context.flattenArray = function(array) {
