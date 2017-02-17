@@ -12,23 +12,7 @@ IDFAPP.Scene = function () {
 
     this._lastFractalParams = null;
 
-    this._rebuildFractal({
-        rules: {
-            axiom: "F",
-            main: "F+[F-F]+F",
-            //main: "FF+[+F-F[F0|F0]-0]-[-F+F+F]",
-            secondary: [
-                "F-[[0]+0]+F[+|F0]-0",
-                "F+F+F+F+F+FFFFFL[22]FFFF",
-                "FFFFFF333FFF",
-                "FFFFF00FFFFF"
-            ]
-        },
-        iterations: 3,
-        theta: 22.5,
-        scale: 1,
-        angleInitial: 5
-    });
+    this._rebuildFractal(this._getEquation(1));
 };
 
 IDFAPP.Scene.prototype = Object.create(GLW.Scene.prototype);
@@ -89,12 +73,15 @@ IDFAPP.Scene.prototype._updateCamera = function () {
 };
 
 IDFAPP.Scene.prototype._doFractalAction = function (action) {
-    switch (action) {
+    switch (action.action) {
         case "increment":
             this._lastFractalParams.iterations++;
             break;
         case "decrement":
             this._lastFractalParams.iterations--;
+            break;
+        case "equation":
+            this._lastFractalParams = this._getEquation(action.equation);
             break;
     }
 
@@ -115,10 +102,174 @@ IDFAPP.Scene.prototype._updateActions = function () {
     }
 
     if (lastFractalAction)
-        this._doFractalAction(action.action);
+        this._doFractalAction(action);
 };
 
 IDFAPP.Scene.prototype.update = function () {
     this._updateCamera();
     this._updateActions();
+};
+
+IDFAPP.Scene.prototype._getEquation = function (eqation) {
+    var eqs = [
+        /*
+         * Equation 1.
+         */
+        {
+            rules: {
+                axiom: "F",
+                main: "F+[F-F]+F",
+                secondary: [
+                    "F-[[0]+0]+F[+|F0]-0",
+                    "F+F+F+F+F+FFFFFL[22]FFFF",
+                    "FFFFFF333FFF",
+                    "FFFFF00FFFFF"
+                ]
+            },
+            iterations: 3,
+            theta: 22.5,
+            scale: 1,
+            angleInitial: 5
+        },
+        /*
+         * Equation 2.
+         */
+        {
+            rules: {
+                axiom: "F",
+                main: "FF+[+F-F[F0|F0]-0]-[-F+F+F]",
+                secondary: [
+                    "F-[[0]+0]+F[+|F0]-0",
+                    "F+F+F+F+F+FFFFFL[22]FFFF",
+                    "FFFFFF333FFF",
+                    "FFFFF00FFFFF"
+                ]
+            },
+            iterations: 3,
+            theta: 22.5,
+            scale: 1,
+            angleInitial: 5
+        },
+        /*
+         * Equation 3.
+         */
+        {
+            rules: {
+                axiom: "F",
+                main: "F+[F-F]+F",
+                //main: "FF+[+F-F[F0|F0]-0]-[-F+F+F]",
+                secondary: [
+                    "F-[[0]+0]+F[+|F0]-0",
+                    "F+F+F+F+F+FFFFFL[22]FFFF",
+                    "FFFFFF333FFF",
+                    "FFFFF00FFFFF"
+                ]
+            },
+            iterations: 3,
+            theta: 22.5,
+            scale: 1,
+            angleInitial: 5
+        },
+        /*
+         * Equation 3.
+         */
+        {
+            rules: {
+                axiom: "F",
+                main: "F+[F-F]+F",
+                //main: "FF+[+F-F[F0|F0]-0]-[-F+F+F]",
+                secondary: [
+                    "F-[[0]+0]+F[+|F0]-0",
+                    "F+F+F+F+F+FFFFFL[22]FFFF",
+                    "FFFFFF333FFF",
+                    "FFFFF00FFFFF"
+                ]
+            },
+            iterations: 3,
+            theta: 22.5,
+            scale: 1,
+            angleInitial: 5
+        },
+        /*
+         * Equation 4.
+         */
+        {
+            rules: {
+                axiom: "F",
+                main: "F+[F-F]+F",
+                //main: "FF+[+F-F[F0|F0]-0]-[-F+F+F]",
+                secondary: [
+                    "F-[[0]+0]+F[+|F0]-0",
+                    "F+F+F+F+F+FFFFFL[22]FFFF",
+                    "FFFFFF333FFF",
+                    "FFFFF00FFFFF"
+                ]
+            },
+            iterations: 3,
+            theta: 22.5,
+            scale: 1,
+            angleInitial: 5
+        },
+        /*
+         * Equation 6.
+         */
+        {
+            rules: {
+                axiom: "F",
+                main: "F+[F-F]+F",
+                //main: "FF+[+F-F[F0|F0]-0]-[-F+F+F]",
+                secondary: [
+                    "F-[[0]+0]+F[+|F0]-0",
+                    "F+F+F+F+F+FFFFFL[22]FFFF",
+                    "FFFFFF333FFF",
+                    "FFFFF00FFFFF"
+                ]
+            },
+            iterations: 3,
+            theta: 22.5,
+            scale: 1,
+            angleInitial: 5
+        },
+        /*
+         * Equation 7.
+         */
+        {
+            rules: {
+                axiom: "F",
+                main: "F+[F-F]+F",
+                //main: "FF+[+F-F[F0|F0]-0]-[-F+F+F]",
+                secondary: [
+                    "F-[[0]+0]+F[+|F0]-0",
+                    "F+F+F+F+F+FFFFFL[22]FFFF",
+                    "FFFFFF333FFF",
+                    "FFFFF00FFFFF"
+                ]
+            },
+            iterations: 3,
+            theta: 22.5,
+            scale: 1,
+            angleInitial: 5
+        },
+        /*
+         * Equation 8.
+         */
+        {
+            rules: {
+                axiom: "F",
+                main: "F+[F-F]+F",
+                //main: "FF+[+F-F[F0|F0]-0]-[-F+F+F]",
+                secondary: [
+                    "F-[[0]+0]+F[+|F0]-0",
+                    "F+F+F+F+F+FFFFFL[22]FFFF",
+                    "FFFFFF333FFF",
+                    "FFFFF00FFFFF"
+                ]
+            },
+            iterations: 3,
+            theta: 22.5,
+            scale: 1,
+            angleInitial: 5
+        }];
+
+    return eqs[eqation - 1] || eqation[0];
 };

@@ -35,7 +35,7 @@ IDFAPP.Controls.prototype = {
                 this._keysState[key] = true;
             }
         }
-       
+
     },
     _handleKeyUp: function (key) {
         if (this._keysState[key] !== undefined)
@@ -50,6 +50,15 @@ IDFAPP.Controls.prototype = {
                 this._actionStack.push({type: "fractal", action: "decrement"});
                 break;
         }
+
+        var isEquation = key.match("[1-8]");
+
+        if (isEquation)
+            this._actionStack.push({
+                type: "fractal",
+                action: "equation",
+                equation: parseInt(isEquation[0]) || 1
+            });
     },
     handleEvent: function (evt) {
         switch (evt.type) {
