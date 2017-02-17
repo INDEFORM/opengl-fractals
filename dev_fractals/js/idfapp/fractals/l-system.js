@@ -24,7 +24,7 @@ IDFAPP.FractalLSystem = function (scene, params) {
 
     var material = new THREE.LineBasicMaterial({color: 0x333333});
     var line_geometry = new THREE.Geometry();
-    line_geometry = this._construct(line_geometry, new THREE.Vector3(0, 0, 0));
+    line_geometry = this._construct(this._params, line_geometry, new THREE.Vector3(0, 0, 0));
     var plant = new THREE.Line(line_geometry, material, THREE.LinePieces);
 
     scene.add(plant);
@@ -65,19 +65,19 @@ IDFAPP.FractalLSystem.prototype._generateAxiomTree = function (params) {
     return tree;
 };
 
-IDFAPP.FractalLSystem.prototype._construct = function (geometry, initial) {
+IDFAPP.FractalLSystem.prototype._construct = function (params, geometry, initial) {
     initial = initial || new THREE.Vector3();
 
-    var axiomTree = this._generateAxiomTree(this._params);
+    var axiomTree = this._generateAxiomTree(params);
 
     var stack = {
         angle: [],
         vertex: []
     };
 
-    var theta = this._params.theta * Math.PI / 180;
-    var scale = this._params.scale;
-    var angle = this._params.angleInitial * Math.PI / 180;
+    var theta = (params.theta || 0) * Math.PI / 180;
+    var scale = (params.scale || 0);
+    var angle = (params.angleInitial || 0) * Math.PI / 180;
 
     var rotation = 0, deg45 = 45 * Math.PI / 180;
 

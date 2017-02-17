@@ -1,5 +1,3 @@
-Testing = this.Testing || {};
-
 Testing.BaseTestCase = function (name, desc) {
     this._name = name || "Unnamed test";
     this._description = desc || "No description";

@@ -18,6 +18,7 @@ and open the template in the editor.
         <script type="text/javascript" src="js/testing/base-test.js"></script>
 
         <!-- Test sources -->
+        <script type="text/javascript" src="js/libs/threejs/three.js"></script>
         <script type="text/javascript">
             IDFAPP = this.IDFAPP || {}; // Fake namespace.
             IDFAPP.FractalBuilder = this.IDFAPP.FractalBuilder || function () {};
@@ -37,6 +38,9 @@ and open the template in the editor.
                     .addTest(new Testing.TestLSystemSimple2())
                     .addTest(new Testing.TestLSystemSimple3())
                     .addTest(new Testing.TestLSystemSubBranch1())
+                    .addTest(new Testing.TestLSystemSubBranch2())
+                    .addTest(new Testing.TestLSystemGenSimple1())
+                    .addTest(new Testing.TestLSystemGenSimple2())
                     .run();
         </script>
     </body>
