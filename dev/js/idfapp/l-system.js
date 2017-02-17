@@ -1,5 +1,9 @@
 /* global IDFAPP, THREE */
 
+/**
+ * Used to construct fractal L-System.
+ * @returns {IDFAPP.FractalLSystem} Self.
+ */
 IDFAPP.FractalLSystem = function () {
     IDFAPP.BaseFractalBuilder.call(this);
 };
@@ -7,40 +11,54 @@ IDFAPP.FractalLSystem = function () {
 IDFAPP.FractalLSystem.prototype = Object.create(IDFAPP.BaseFractalBuilder.prototype);
 IDFAPP.FractalLSystem.prototype.constructor = IDFAPP.BaseFractalLSystem;
 
+/**
+ * Constructs axiom string for L-System.
+ * @param {Object} params System parameters.
+ * @returns {String} Constructed system.
+ */
 IDFAPP.FractalLSystem.prototype._generateAxiomTree = function (params) {
-    var tree = params.rules.axiom;
+    //Initial condition if no iterations available.
+    var system = params.rules.axiom;
 
     //Create iterations
     for (var i = 0; i < params.iterations; i++) {
-        var m = tree.length;
         var extension = "";
-        for (var j = 0; j < m; j++) {
-            var isSub = tree[j].match("[0-9]");
+        for (var j = 0; j < system.length; j++) {
+
+            //Checks for sub-tree.
+            var isSub = system[j].match("[0-9]");
             if (isSub) {
                 extension += (params.rules.secondary[parseInt(isSub[0]) || 0]) || "";
             } else {
-                switch (tree[j]) {
+                switch (system[j]) {
+                    //Appends main rule.
                     case "F":
                         extension += params.rules.main;
                         break;
                     default:
-                        extension += tree[j];
+                        extension += system[j];
                         break;
                 }
             }
         }
-        tree = extension;
+        //Constructed system.
+        system = extension;
     }
 
-    return tree;
+    return system;
 };
 
+/**
+ * Creates vertex list for L-System.
+ * @param {Object} params Build parameters.
+ * @param {Math.Vector3} initial Initial position.
+ * @returns {Array} Vertex list.
+ */
 IDFAPP.FractalLSystem.prototype.build = function (params, initial) {
     var vertices = [];
     initial = initial || new Math.Vector3();
 
-    var axiomTree = this._generateAxiomTree(params);
-
+    var axiomTree = this._generateAxiomTree(params);    //Gets the system.
     var stack = {
         angle: [],
         vertex: []
@@ -62,12 +80,15 @@ IDFAPP.FractalLSystem.prototype.build = function (params, initial) {
 
     for (var i = 0; i < axiomTree.length; i++) {
         switch (axiomTree[i]) {
+            //Rotate by negative theta
             case "+":
                 angle -= theta;
                 break;
+            //Rotate by positive theta
             case "-":
                 angle += theta;
                 break;
+            //Moves turtle forward
             case "F":
                 a = deltaVec.clone().applyAxisAngle(yAxis, angle);
                 endpoint.addVectors(startpoint, a);
@@ -79,6 +100,7 @@ IDFAPP.FractalLSystem.prototype.build = function (params, initial) {
                 startpoint.copy(endpoint);
                 deltaAxis = new Math.Vector3().copy(a).normalize();
                 break;
+            //Creates branch
             case "L":
                 endpoint.copy(startpoint);
                 endpoint.add(new Math.Vector3(0, scale, 0));
@@ -91,14 +113,17 @@ IDFAPP.FractalLSystem.prototype.build = function (params, initial) {
 
                 rotation += deg45;
                 break;
+            //Saves state to stack
             case "[":
                 stack.vertex.push(startpoint.clone());
                 stack.angle[stack.angle.length] = angle;
                 break;
+            //Pops state from stack
             case "]":
                 startpoint.copy(stack.vertex.pop().clone());
                 angle = stack.angle.pop();
                 break;
+            //Inverts angle
             case "|":
                 angle = -angle;
                 break;

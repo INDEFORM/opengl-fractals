@@ -1,5 +1,9 @@
 /* global IDFAPP, GLW, matrix */
 
+/**
+ * Drawable scene.
+ * @returns {IDFAPP.Scene} Self.
+ */
 IDFAPP.Scene = function () {
     GLW.Scene.call(this);
 
@@ -18,6 +22,10 @@ IDFAPP.Scene = function () {
 IDFAPP.Scene.prototype = Object.create(GLW.Scene.prototype);
 IDFAPP.Scene.prototype.constructor = IDFAPP.Scene;
 
+/**
+ * Clears the scene and rebuilds the fractal with parameters.
+ * @param {Object} params Fractal parameters.
+ */
 IDFAPP.Scene.prototype._rebuildFractal = function (params) {
     this._lastFractalParams = params;
 
@@ -38,6 +46,9 @@ IDFAPP.Scene.prototype.getCamera = function () {
     return this._camera;
 };
 
+/**
+ * Updates camera position based on key state.
+ */
 IDFAPP.Scene.prototype._updateCamera = function () {
     var state = this._controls.getState();
 
@@ -72,6 +83,10 @@ IDFAPP.Scene.prototype._updateCamera = function () {
     }
 };
 
+/**
+ * Performs a fractal action.
+ * @param {Object} action Actiion data.
+ */
 IDFAPP.Scene.prototype._doFractalAction = function (action) {
     switch (action.action) {
         case "increment":
@@ -89,9 +104,13 @@ IDFAPP.Scene.prototype._doFractalAction = function (action) {
     this._rebuildFractal(this._lastFractalParams);
 };
 
+/**
+ * Calls for action update based on action stack generation by controller.
+ */
 IDFAPP.Scene.prototype._updateActions = function () {
     var stack = this._controls.getActionStack();
 
+    //Only last action is relevant.
     var lastFractalAction = null;
 
     while (stack.length > 0) {
@@ -110,11 +129,19 @@ IDFAPP.Scene.prototype._updateActions = function () {
         this._doFractalAction(action);
 };
 
+/**
+ * Performs an update.
+ */
 IDFAPP.Scene.prototype.update = function () {
     this._updateCamera();
     this._updateActions();
 };
 
+/**
+ * Gets equation from list.
+ * @param {Number} eqation ID of equation. (1-8)
+ * @returns {Object} Equation.
+ */
 IDFAPP.Scene.prototype._getEquation = function (eqation) {
     var eqs = [
         /*

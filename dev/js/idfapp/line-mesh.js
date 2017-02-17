@@ -1,5 +1,10 @@
 /* global IDFAPP, GLW */
 
+/**
+ * Creates line mesh from vertex array.
+ * @param {Array} vertices Vertex array.
+ * @returns {IDFAPP.LineMesh} Self.
+ */
 IDFAPP.LineMesh = function (vertices) {
 
     var vertex_shader = document.getElementById('vertex-shader').innerText;

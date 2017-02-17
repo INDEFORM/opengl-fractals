@@ -1,5 +1,9 @@
 /* global IDFAPP */
 
+/**
+ * Responsible for keyboard controls.
+ * @returns {IDFAPP.Controls} Self.
+ */
 IDFAPP.Controls = function () {
     this._keysState = {
         ArrowUp: false,
@@ -77,9 +81,17 @@ IDFAPP.Controls.prototype = {
                 break;
         }
     },
+    /**
+     * Retrieves current key state.
+     * @returns {Object} Key state.
+     */
     getState: function () {
         return this._keysState;
     },
+    /**
+     * Retrieves action stack.
+     * @returns {Array} Action stack.
+     */
     getActionStack: function () {
         return this._actionStack;
     }
