@@ -1,3 +1,5 @@
+/* global IDFAPP */
+
 IDFAPP.UI = function (core) {
     this.core = core;
     this.scene = this.core.view3d.scene;
@@ -9,38 +11,36 @@ IDFAPP.UI = function (core) {
         this.events_wrapper.addEventListener('keyup', this, false);
         this.events_wrapper.addEventListener('change', this, false);
     }
-
-   
 };
 
 
 
 IDFAPP.UI.prototype = {
-	handleEvent: function(evt) {
-		var action = IDFAPP.getEventAction(evt, 'evt-action');
+    handleEvent: function (evt) {
+        var action = IDFAPP.getEventAction(evt, 'evt-action');
 
-		if (action != null) {
-			switch(evt.type) {
-				case 'click':
-				    switch (action.type) {
-			        case 'activate-tools':
-			            break;
-				    }
-					break;
-				case 'keyup':
-					switch(action.type) {
-					case 'text-area':
-						break;
-					}
-			    case 'change':
-				    switch (action.type) {
-			        case 'text-spacing':
-			            break;
+        if (action !== null) {
+            switch (evt.type) {
+                case 'click':
+                    switch (action.type) {
+                        case 'activate-tools':
+                            break;
+                    }
+                    break;
+                case 'keyup':
+                switch (action.type) {
+                    case 'text-area':
+                        break;
+                }
+                case 'change':
+                    switch (action.type) {
+                        case 'text-spacing':
+                            break;
                     }
                     break;
                 case 'mouseover':
                     break;
             }
         }
-    },
+    }
 };
