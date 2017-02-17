@@ -186,7 +186,7 @@ Testing.TestUtilsCompare5.prototype = Object.create(Testing.BaseTestCase.prototy
     },
     getCase: {
         writable: true, configurable: true, value: function (assert) {
-            var actual = Testing.compare([-5.000000005, 5.00000001], [-5, 5], 1E-5);
+            var actual = Testing.compare([-5.000000005, 5.00000001], [-5, 5], 1E-2);
 
             assert.ok(actual, "Checks if equal for epsilon 1E-5.");
         }
