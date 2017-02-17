@@ -1,24 +1,26 @@
-GLW.Context = function () {
+GLW.Context = function (canvas) {
 	this._glcontext = null;
 	this._canvas = canvas;
+	
+	var glc = null;
 	
 	try
 	{
 		var flags = {'preserveDrawingBuffer': false};
-		var glc = canvas.getContext("webgl", flags) || canvas.getContext("experimental-webgl", flags);
-		
-		this._glcontext = glc;
-		
-		glc.clearDepth(1.0);
-		glc.enable(glc.DEPTH_TEST);
-		//glc.enable(glc.CULL_FACE);
-		glc.depthFunc(glc.LEQUAL);
-		glc.blendFuncSeparate(glc.SRC_ALPHA, glc.ONE_MINUS_SRC_ALPHA, glc.ONE, glc.ONE_MINUS_SRC_ALPHA);
-		glc.cullFace(glc.BACK);
+		glc = canvas.getContext("webgl", flags) || canvas.getContext("experimental-webgl", flags);
 	}
 	catch(e) {
 		throw "Failed to get the WebGL context";
 	}
+	
+	this._glcontext = glc;
+	
+	glc.clearDepth(1.0);
+	glc.enable(glc.DEPTH_TEST);
+	//glc.enable(glc.CULL_FACE);
+	glc.depthFunc(glc.LEQUAL);
+	glc.blendFuncSeparate(glc.SRC_ALPHA, glc.ONE_MINUS_SRC_ALPHA, glc.ONE, glc.ONE_MINUS_SRC_ALPHA);
+	glc.cullFace(glc.BACK);
 };
 
 GLW.Context.prototype.render = function (scene) {
@@ -34,7 +36,7 @@ GLW.Context.prototype.render = function (scene) {
 		object.addToSetRecursively(objects);
 	}
 	
-	var cam = scene.camera;
+	var camera = scene.camera;
 	var cam_mtx = camera.global_inverse_matrix;
 	var fr_mtx = camera.frustum_matrix;
 	cam_mtx = fr_mtx.multiply(cam_mtx);
@@ -52,11 +54,11 @@ GLW.Context.prototype.renderObject = function (object, cam_mtx) {
 	var geometry = object.geometry;
 	var material = object.material;
 	
-	if (!geometry.buffers_built) geometry.buildBuffers();
-	if (!material.shaders_compiled) material.compileShaders();
+	if (!geometry.buffers_built) geometry.buildBuffers(glc);
+	if (!material.shaders_compiled) material.compileShaders(glc);
 	
 	glc.useProgram(material.program);
-	glc.bindBuffer(glc.ELEMENT_ARRAY_BUFFER, geometry.indices);
+	glc.bindBuffer(glc.ELEMENT_ARRAY_BUFFER, geometry.index_buffer);
 	
 	var used_attr_locations = [];
 	for (let [attr_name, geo_attr] of geometry.attributes) {
@@ -93,7 +95,7 @@ GLW.Context.prototype.renderObject = function (object, cam_mtx) {
 	
 	var obj_mtx = object.global_matrix;
 	var mdlv_mtx = cam_mtx.multiply(obj_mtx);
-	this.setUniformValue(material.uniform_locations['modelViewMatrix'], material.program_uniforms['modelViewMatrix'], mdlv);
+	this.setUniformValue(material.uniform_locations['modelViewMatrix'], material.program_uniforms['modelViewMatrix'], mdlv_mtx);
 	
 	glc.drawElements(glc.TRIANGLES, geometry.index_count, glc.UNSIGNED_SHORT, 0);
 	

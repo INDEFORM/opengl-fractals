@@ -7,7 +7,7 @@ GLW.Camera = function (fov) {
 	this.aspect_ratio = 4/3;
 };
 
-GLW.Camera.prototype = Object.create(GLW.Object);
+GLW.Camera.prototype = Object.create(GLW.Object.prototype);
 GLW.Camera.prototype.constructor = GLW.Camera;
 
 GLW.Camera.prototype.calculateProjectionMatrix = function () {

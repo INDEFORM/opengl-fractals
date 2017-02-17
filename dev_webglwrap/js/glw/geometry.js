@@ -1,5 +1,5 @@
 GLW.Geometry = function () {
-	this.attributes = Map();
+	this.attributes = new Map();
 	this.indices = null;
 	
 	this.buffers_built = false;

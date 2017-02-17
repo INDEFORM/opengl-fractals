@@ -37,15 +37,15 @@ GLW.Object.prototype._getPositionMatrix = function () {
 
 GLW.Object.prototype._getRotationMatrix = function() {
 	var mtx;
-	var mode = this._rotation_mode;
+	var mode = this.rotation_mode;
 	
 	switch (mode) {
 		case 'quaternion':
 			mtx = matrix.quaternionToMatrix(this._rotation_quaternion.setLength(1));
 			break;
 		case 'euler':
-			var order = this._rotation_euler_order;
-			var ang = this._rotation_euler;
+			var order = this.rotation_euler.order;
+			var ang = this.rotation_euler.angles;
 			mtx = matrix.eulerToMatrix(ang, order);
 			break;
 	}

@@ -4,5 +4,5 @@ GLW.Mesh = function (geometry, material) {
 	this.material = material;
 };
 
-GLW.Mesh.prototype = Object.create(GLW.Object);
+GLW.Mesh.prototype = Object.create(GLW.Object.prototype);
 GLW.Mesh.prototype.constructor = GLW.Mesh;

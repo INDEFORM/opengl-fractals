@@ -53,8 +53,8 @@ GLW.Material.prototype.compileShaders = function (glc) {
 		fragment: fragment_shader
 	};
 	this.program = shader_program;
-	this.processProgramAttributeList();
-	this.processProgramUniformList();
+	this.processProgramAttributeList(glc);
+	this.processProgramUniformList(glc);
 	this.shaders_compiled = true;
 };
 
