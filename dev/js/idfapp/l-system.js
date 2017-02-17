@@ -1,39 +1,11 @@
 /* global IDFAPP, THREE */
 
-IDFAPP.FractalLSystem = function (scene, params) {
-    IDFAPP.FractalBuilder.call(this);
-
-    this._params = {
-        rules: {
-            axiom: "F",
-            main: "F+[F-F]+F",
-            secondary: [
-                "F-[[0]+X]+F[+|F0]-0",
-                "F+F+F+F+F+FFFFFL[22]FFFF",
-                "FFFFFF333FFF",
-                "FFFFF00FFFFF"
-            ]
-        },
-        iterations: 3,
-        theta: 22.5,
-        scale: 1,
-        angleInitial: 5
-    };
-
-    var material = new THREE.LineBasicMaterial({color: 0x333333, wireframe: true});
-    var line_geometry = new THREE.Geometry();
-    line_geometry = this._construct(this._params, line_geometry, new THREE.Vector3(0, 0, 0));
-    var plant = new THREE.Line(line_geometry, material, THREE.LinePieces);
-
-    scene.add(plant);
+IDFAPP.FractalLSystem = function () {
+    IDFAPP.BaseFractalBuilder.call(this);
 };
 
-IDFAPP.FractalLSystem.prototype = Object.create(IDFAPP.FractalBuilder.prototype);
-IDFAPP.FractalLSystem.prototype.constructor = IDFAPP.FractalLSystem;
-
-IDFAPP.FractalLSystem.prototype.generate = function () {
-    this._buildPrimitive();
-};
+IDFAPP.FractalLSystem.prototype = Object.create(IDFAPP.BaseFractalBuilder.prototype);
+IDFAPP.FractalLSystem.prototype.constructor = IDFAPP.BaseFractalLSystem;
 
 IDFAPP.FractalLSystem.prototype._generateAxiomTree = function (params) {
     var tree = params.rules.axiom;
@@ -63,8 +35,9 @@ IDFAPP.FractalLSystem.prototype._generateAxiomTree = function (params) {
     return tree;
 };
 
-IDFAPP.FractalLSystem.prototype._construct = function (params, geometry, initial) {
-    initial = initial || new THREE.Vector3();
+IDFAPP.FractalLSystem.prototype.build = function (params, initial) {
+    var vertices = [];
+    initial = initial || new Math.Vector3();
 
     var axiomTree = this._generateAxiomTree(params);
 
@@ -79,17 +52,15 @@ IDFAPP.FractalLSystem.prototype._construct = function (params, geometry, initial
 
     var rotation = 0, deg45 = 45 * Math.PI / 180;
 
-    var yAxis = new THREE.Vector3(0, 1, 0);
-    var deltaAxis = new THREE.Vector3(), prev_startpoint = new THREE.Vector3();
+    var yAxis = new Math.Vector3(0, 1, 0);
+    var deltaAxis = new Math.Vector3(), prev_startpoint = new Math.Vector3();
 
-    var startpoint = initial.clone(), endpoint = new THREE.Vector3();
-    var deltaVec = new THREE.Vector3(scale, scale, 0);
+    var startpoint = initial.clone(), endpoint = new Math.Vector3();
+    var deltaVec = new Math.Vector3(scale, scale, 0);
 
     var a, deltaVec2;
 
     for (var i = 0; i < axiomTree.length; i++) {
-        //var a = axiomTree[i];
-
         switch (axiomTree[i]) {
             case "+":
                 angle -= theta;
@@ -101,22 +72,22 @@ IDFAPP.FractalLSystem.prototype._construct = function (params, geometry, initial
                 a = deltaVec.clone().applyAxisAngle(yAxis, angle);
                 endpoint.addVectors(startpoint, a);
 
-                geometry.vertices.push(startpoint.clone());
-                geometry.vertices.push(endpoint.clone());
+                vertices.push(startpoint.clone());
+                vertices.push(endpoint.clone());
 
                 prev_startpoint.copy(startpoint);
                 startpoint.copy(endpoint);
-                deltaAxis = new THREE.Vector3().copy(a).normalize();
+                deltaAxis = new Math.Vector3().copy(a).normalize();
                 break;
             case "L":
                 endpoint.copy(startpoint);
-                endpoint.add(new THREE.Vector3(0, scale, 0));
-                deltaVec2 = new THREE.Vector3().subVectors(endpoint, startpoint);
+                endpoint.add(new Math.Vector3(0, scale, 0));
+                deltaVec2 = new Math.Vector3().subVectors(endpoint, startpoint);
                 deltaVec2.applyAxisAngle(deltaAxis, rotation);
                 endpoint.addVectors(startpoint, deltaVec2);
 
-                geometry.vertices.push(startpoint.clone());
-                geometry.vertices.push(endpoint.clone());
+                vertices.push(startpoint.clone());
+                vertices.push(endpoint.clone());
 
                 rotation += deg45;
                 break;
@@ -134,5 +105,5 @@ IDFAPP.FractalLSystem.prototype._construct = function (params, geometry, initial
         }
     }
 
-    return geometry;
+    return new IDFAPP.LineMesh(vertices);
 };

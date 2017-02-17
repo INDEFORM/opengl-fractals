@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>WebGL Fractals</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- Math -->        
+        <script type="text/javascript" src="js/math/matrix.js"></script>
+        <script type="text/javascript" src="js/math/vector3.js"></script>
+        <script type="text/javascript" src="js/math/quaternion.js"></script>
+                
+        <!-- Rendering engine -->
+        <script type="text/javascript" src="js/glw/namespace.js"></script>
+        <script type="text/javascript" src="js/glw/object.js"></script>
+        <script type="text/javascript" src="js/glw/geometry.js"></script>
+        <script type="text/javascript" src="js/glw/material.js"></script>
+        <script type="text/javascript" src="js/glw/mesh.js"></script>
+        <script type="text/javascript" src="js/glw/camera.js"></script>
+        <script type="text/javascript" src="js/glw/scene.js"></script>
+        <script type="text/javascript" src="js/glw/context.js"></script>
+
+        <!-- Fractals -->
+        <script type="text/javascript" src="js/idfapp.js"></script>
+        <script type="text/javascript" src="js/idfapp/view3d.js"></script>
+        <script type="text/javascript" src="js/idfapp/core.js"></script>
+        <script type="text/javascript" src="js/idfapp/scene.js"></script>
+        <script type="text/javascript" src="js/idfapp/line-mesh.js"></script>
+        <script type="text/javascript" src="js/idfapp/base-fractal-builder.js"></script>
+        <script type="text/javascript" src="js/idfapp/l-system.js"></script>
+        
+
+        <script id="vertex-shader" type="x-shader/x-vertex">
+            uniform mediump mat4 modelViewMatrix;
+            attribute mediump vec3 position;
+
+            void main() {
+            gl_Position = modelViewMatrix*vec4(position, 1.0);
+            }
+        </script>
+
+        <script id="fragment-shader" type="x-shader/x-fragment">
+            uniform mediump vec4 color;
+
+            void main() {
+            gl_FragColor = color;
+            }
+        </script>
+    </head>
+    <body>
+        <canvas id="view" width="800" height="600"></canvas>
+
+        <script type="text/javascript">
+            IDFAPP.Core.initialize(document.getElementById("view")).beginRender();
+        </script>
+    </body>
+</html>
