@@ -3,11 +3,10 @@
 IDFAPP.Scene = function (view3d) {
     THREE.Scene.call(this);
 
-    this.view3d = view3d;
-    this.camera = null;
+    this._view3d = view3d;
+    this._camera = null;
 
-    this.target = null;
-
+    this._target = null;
 
     this.setupCamera(IDFAPP.VIEW3D_DEFAULT_CAMERA_POS, IDFAPP.VIEW3D_DEFAULT_CAMERA_TARGET, IDFAPP.VIEW3D_WIDTH / IDFAPP.VIEW3D_HEIGHT);
     this.setupLights();
@@ -20,25 +19,28 @@ IDFAPP.Scene.prototype.constructor = IDFAPP.Scene;
 
 // SCENE SETUP
 IDFAPP.Scene.prototype.setupCamera = function (pos, target, aspect) {
-    this.camera = new THREE.PerspectiveCamera(IDFAPP.VIEW3D_VIEW_ANGLE, aspect, IDFAPP.VIEW3D_NEAR, IDFAPP.VIEW3D_FAR);
-    this.camera.position.copy(pos);
-    this.camera.lookAt(target);
-    this.target = target;
-    this.add(this.camera);
+    this._camera = new THREE.PerspectiveCamera(IDFAPP.VIEW3D_VIEW_ANGLE, aspect, IDFAPP.VIEW3D_NEAR, IDFAPP.VIEW3D_FAR);
+    this._camera.position.copy(pos);
+    this._camera.lookAt(target);
+    this._target = target;
+    this.add(this._camera);
+};
+
+IDFAPP.Scene.prototype.getCamera = function () {
+    return this._camera;
 };
 
 
-
 IDFAPP.Scene.prototype.setCameraTop = function () {
-    this.camera.position.copy(IDFAPP.VIEW3D_EDITING_CAMERA_POS);
-    this.camera.lookAt(IDFAPP.VIEW3D_EDITING_CAMERA_TARGET);
+    this._camera.position.copy(IDFAPP.VIEW3D_EDITING_CAMERA_POS);
+    this._camera.lookAt(IDFAPP.VIEW3D_EDITING_CAMERA_TARGET);
 };
 
 
 
 IDFAPP.Scene.prototype.updateCameraAspect = function (aspect) {
-    this.camera.aspect = aspect;
-    this.camera.updateProjectionMatrix();
+    this._camera.aspect = aspect;
+    this._camera.updateProjectionMatrix();
 };
 
 

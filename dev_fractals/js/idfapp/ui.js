@@ -1,15 +1,15 @@
 /* global IDFAPP */
 
 IDFAPP.UI = function (core) {
-    this.core = core;
-    this.scene = this.core.view3d.scene;
-    this.events_wrapper = this.core.params.events_wrapper;
+    this._core = core;
+    this._scene = this._core.getView3d().getScene();
+    this._evtWrapper = this._core.getParams().events_wrapper;
 
-    if (this.events_wrapper) {
-        this.events_wrapper.addEventListener('click', this, false);
-        this.events_wrapper.addEventListener('mouseover', this, false);
-        this.events_wrapper.addEventListener('keyup', this, false);
-        this.events_wrapper.addEventListener('change', this, false);
+    if (this._evtWrapper) {
+        this._evtWrapper.addEventListener('click', this, false);
+        this._evtWrapper.addEventListener('mouseover', this, false);
+        this._evtWrapper.addEventListener('keyup', this, false);
+        this._evtWrapper.addEventListener('change', this, false);
     }
 };
 
