@@ -61,7 +61,6 @@ GLW.Context.prototype.renderObject = function (object, cam_mtx) {
 	if (!material.shaders_compiled) material.compileShaders(glc);
 	
 	glc.useProgram(material.program);
-	glc.bindBuffer(glc.ELEMENT_ARRAY_BUFFER, geometry.index_buffer);
 	
 	var used_attr_locations = [];
 	for (let [attr_name, geo_attr] of geometry.attributes) {
@@ -100,7 +99,13 @@ GLW.Context.prototype.renderObject = function (object, cam_mtx) {
 	var mdlv_mtx = cam_mtx.multiply(obj_mtx);
 	this.setUniformValue(material.uniform_locations['modelViewMatrix'], material.program_uniforms['modelViewMatrix'], mdlv_mtx);
 	
-	glc.drawElements(glc.TRIANGLES, geometry.index_count, glc.UNSIGNED_SHORT, 0);
+	for (var elemtype in geometry.elements) {
+		var elems = geometry.elements[elemtype];
+		if (elems.index_count) {
+			glc.bindBuffer(glc.ELEMENT_ARRAY_BUFFER, elems.index_buffer);
+			glc.drawElements(glc[elems.gl_enum], elems.index_count, glc.UNSIGNED_SHORT, 0);
+		}
+	}
 	
 	for (var i = 0; i < used_attr_locations.length; i++) {
 		glc.disableVertexAttribArray(used_attr_locations[i]);
