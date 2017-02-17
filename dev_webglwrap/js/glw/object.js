@@ -50,7 +50,9 @@ GLW.Object.prototype._getRotationMatrix = function() {
 			break;
 	}
 	
-	return mtx.resize(4, 4);
+	mtx = mtx.resize(4, 4);
+	mtx.data[3][3] = 1;
+	return mtx;
 };
 
 GLW.Object.prototype._getScaleMatrix = function () {

@@ -30,6 +30,7 @@ GLW.Context.prototype.render = function (scene) {
 	glc.clearColor(bgcolor.r, bgcolor.g, bgcolor.b, 1);
 	glc.clear(glc.COLOR_BUFFER_BIT | glc.DEPTH_BUFFER_BIT);
 	
+	
 	var objects = new Set();
 	for (let object of scene.objects) {
 		object.calculateMatrices();
@@ -37,6 +38,7 @@ GLW.Context.prototype.render = function (scene) {
 	}
 	
 	var camera = scene.camera;
+	camera.calculateMatrices();
 	camera.calculateFrustumMatrix();
 	var cam_mtx = camera.global_inverse_matrix;
 	var fr_mtx = camera.frustum_matrix;
