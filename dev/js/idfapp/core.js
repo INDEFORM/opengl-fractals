@@ -5,7 +5,7 @@ IDFAPP.Core = function (canvas) {
     this._view3d = new IDFAPP.View3d(canvas, this._scene);
     this._fractalBuilder = new IDFAPP.FractalLSystem();
 
-    this._scene.add(this._fractalBuilder.build({
+    this._scene.add(new IDFAPP.LineMesh(this._fractalBuilder.build({
         rules: {
             axiom: "F",
             main: "F+[F-F]+F",
@@ -21,7 +21,7 @@ IDFAPP.Core = function (canvas) {
         theta: 22.5,
         scale: 1,
         angleInitial: 5
-    }));
+    })));
 };
 
 IDFAPP.Core.prototype = {

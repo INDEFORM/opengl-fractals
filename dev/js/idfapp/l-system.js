@@ -105,5 +105,5 @@ IDFAPP.FractalLSystem.prototype.build = function (params, initial) {
         }
     }
 
-    return new IDFAPP.LineMesh(vertices);
+    return vertices;
 };

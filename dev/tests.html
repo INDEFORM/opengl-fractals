@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Tests</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" type="text/css" href="css/qunit-2.1.1.css"/>
+        <script type="text/javascript" src="js/libs/qunit-2.1.1.js"></script>
+
+        <!-- Testing framework -->
+        <script type="text/javascript" src="js/testing/test-builder.js"></script>
+        <script type="text/javascript" src="js/testing/base-test.js"></script>
+
+        <!-- Test sources -->
+        <script type="text/javascript" src="js/math/vector3.js"></script>
+        <script type="text/javascript" src="js/math/quaternion.js"></script>
+        <script type="text/javascript">
+            IDFAPP = this.IDFAPP || {}; // Fake namespace.
+            IDFAPP.BaseFractalBuilder = this.IDFAPP.BaseFractalBuilder || function () {};
+        </script>
+        <script type="text/javascript" src="js/idfapp/l-system.js"></script>
+
+        <!-- Tests -->
+        <script type="text/javascript" src="js/testing/tests/tests.generic.js"></script>
+        <script type="text/javascript" src="js/testing/tests/tests.l-system.js"></script>
+        <script type="text/javascript" src="js/testing/tests/tests.performance.js"></script>
+
+    </head>
+    <body>
+        <div id="qunit"></div>
+        <div id="perf"></div>
+
+        <script type="text/javascript">
+            new Testing.TestBuilder(document.getElementById("perf"))
+                    .addTest(new Testing.TestUtilsIsZero1())
+                    .addTest(new Testing.TestUtilsIsZero2())
+                    .addTest(new Testing.TestUtilsIsZero3())
+                    .addTest(new Testing.TestUtilsIsNotZero1())
+                    .addTest(new Testing.TestUtilsIsNotZero2())
+                    .addTest(new Testing.TestUtilsCompare1())
+                    .addTest(new Testing.TestUtilsCompare2())
+                    .addTest(new Testing.TestUtilsCompare3())
+                    .addTest(new Testing.TestUtilsCompare4())
+                    .addTest(new Testing.TestUtilsCompare5())
+                    .addTest(new Testing.TestLSystemSimple())
+                    .addTest(new Testing.TestLSystemSimple2())
+                    .addTest(new Testing.TestLSystemSimple3())
+                    .addTest(new Testing.TestLSystemSubBranch1())
+                    .addTest(new Testing.TestLSystemSubBranch2())
+                    .addTest(new Testing.TestLSystemGenSimple1())
+                    .addTest(new Testing.TestLSystemGenSimple2())
+                    .addTest(new Testing.TestLSystemGenComplex1())
+                    .addTest(new Testing.TestTreeGenerationPerf1(1000))
+                    .addTest(new Testing.TestMeshGenerationPerf1(100))
+                    .run();
+        </script>
+    </body>
+
+</html>

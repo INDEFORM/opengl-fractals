@@ -65,6 +65,26 @@ Math.Vector3.prototype = {
         this.z /= l;
 
         return this;
-    }
+    },
+    add: function (v) {
+        this.x += v.x;
+        this.y += v.y;
+        this.z += v.z;
 
+        return this;
+    },
+    subVectors: function (a, b) {
+        this.x = a.x - b.x;
+        this.y = a.y - b.y;
+        this.z = a.z - b.z;
+
+        return this;
+    },
+    sub: function (v) {
+        this.x -= v.x;
+        this.y -= v.y;
+        this.z -= v.z;
+
+        return this;
+    }
 };
