@@ -37,7 +37,6 @@ IDFAPP.FractalLSystem.prototype.generate = function () {
     this._buildPrimitive();
 };
 
-
 IDFAPP.FractalLSystem.prototype._generateAxiomTree = function (params) {
     var tree = params.rules.axiom;
 
