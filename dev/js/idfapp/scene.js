@@ -99,6 +99,11 @@ IDFAPP.Scene.prototype._updateActions = function () {
 
         if (action.type === "fractal")
             lastFractalAction = action;
+        
+        if(action.type === "camera" && action.action === "reset") {
+            this._camera.position.data[0] = this._camera.position.data[1] = 0;
+            this._camera.position.data[2] = 30;
+        }
     }
 
     if (lastFractalAction)

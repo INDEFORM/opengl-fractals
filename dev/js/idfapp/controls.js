@@ -49,6 +49,10 @@ IDFAPP.Controls.prototype = {
             case "-":
                 this._actionStack.push({type: "fractal", action: "decrement"});
                 break;
+            case "R":
+            case "r":
+                this._actionStack.push({type: "camera", action: "reset"});
+                break;
         }
 
         var isEquation = key.match("[1-8]");
