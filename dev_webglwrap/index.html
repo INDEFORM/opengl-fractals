@@ -1,0 +1,97 @@
+<html>
+	<head>
+		<title>WebGL test</title>
+		
+		<script type="text/javascript" src="js/matrix.js"></script>
+		
+		<script type="text/javascript" src="js/glw/namespace.js"></script>
+		<script type="text/javascript" src="js/glw/object.js"></script>
+		<script type="text/javascript" src="js/glw/geometry.js"></script>
+		<script type="text/javascript" src="js/glw/material.js"></script>
+		<script type="text/javascript" src="js/glw/mesh.js"></script>
+		<script type="text/javascript" src="js/glw/camera.js"></script>
+		<script type="text/javascript" src="js/glw/scene.js"></script>
+		<script type="text/javascript" src="js/glw/context.js"></script>
+		
+		<script type="text/javascript">
+			var context;
+			var scene;
+			var geometry, mesh, material, camera;
+			
+			function initTest() {
+				var canvas = document.getElementById('view');
+				context = new GLW.Context(canvas);
+				
+				scene = new GLW.Scene();
+				camera = new GLW.Camera();
+				scene.camera = camera;
+				
+				var vertex_shader = document.getElementById('vertex-shader').innerText;
+				var fragment_shader = document.getElementById('fragment-shader').innerText;
+				var uniforms = {
+					color: [0.5, 0.25, 0.1, 1]
+				};
+				material = new GLW.Material({vertex: vertex_shader, fragment: fragment_shader}, {}, uniforms);
+				
+				geometry = new GLW.Geometry();
+				geometry.newAttribute('position', new Float32Array([
+					-1, -1, -1,
+					-1, -1,  1,
+					-1,  1, -1,
+					-1,  1,  1,
+					 1, -1, -1,
+					 1, -1,  1,
+					 1,  1, -1,
+					 1,  1,  1
+				]));
+				geometry.indices = new Uint16Array([
+					0, 1, 2,
+					2, 1, 3,
+					4, 5, 6,
+					6, 5, 7,
+					0, 1, 5,
+					5, 1, 6,
+					2, 3, 7,
+					7, 3, 8,
+					0, 2, 4,
+					4, 2, 6,
+					1, 3, 5,
+					5, 3, 7
+				]);
+				
+				mesh = new GLW.Mesh(geometry, material);
+				
+				scene.objects.add(mesh);
+				
+				requestAnimationFrame(renderTest);
+			}
+			
+			function renderTest() {
+				context.render(scene);
+				
+				requestAnimationFrame(renderTest);
+			}
+		</script>
+		
+		<script id="vertex-shader" type="x-shader/x-vertex">
+			mat4 modelViewMatrix;
+			vec3 position;
+			
+			void main() {
+				gl_Position = modelViewMatrix*vec4(position, 1.0);
+			}
+		</script>
+		
+		<script id="fragment-shader" type="x-shader/x-fragment">
+			vec4 color;
+			
+			void main() {
+				gl_FragColor = color;
+			}
+		</script>
+	</head>
+	<body onload="initTest()">
+		<canvas id="view" width="800" height="600"/>
+		
+	</body>
+</html>
