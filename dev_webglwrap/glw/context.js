@@ -1,0 +1,152 @@
+GLW.Context = function () {
+	this._glcontext = null;
+	this._canvas = canvas;
+	
+	try
+	{
+		var flags = {'preserveDrawingBuffer': false};
+		var glc = canvas.getContext("webgl", flags) || canvas.getContext("experimental-webgl", flags);
+		
+		this._glcontext = glc;
+		
+		glc.clearDepth(1.0);
+		glc.enable(glc.DEPTH_TEST);
+		//glc.enable(glc.CULL_FACE);
+		glc.depthFunc(glc.LEQUAL);
+		glc.blendFuncSeparate(glc.SRC_ALPHA, glc.ONE_MINUS_SRC_ALPHA, glc.ONE, glc.ONE_MINUS_SRC_ALPHA);
+		glc.cullFace(glc.BACK);
+	}
+	catch(e) {
+		throw "Failed to get the WebGL context";
+	}
+};
+
+GLW.Context.prototype.render = function (scene) {
+	var glc = this._glcontext;
+	
+	var bgcolor = scene.background_color;
+	glc.clearColor(bgcolor.r, bgcolor.g, bgcolor.b, 1);
+	glc.clear(glc.COLOR_BUFFER_BIT | glc.DEPTH_BUFFER_BIT);
+	
+	var objects = new Set();
+	for (let object of scene.objects) {
+		object.calculateMatrices();
+		object.addToSetRecursively(objects);
+	}
+	
+	var cam = scene.camera;
+	var cam_mtx = camera.global_inverse_matrix;
+	var fr_mtx = camera.frustum_matrix;
+	cam_mtx = fr_mtx.multiply(cam_mtx);
+	cam_mtx = GLW.Context.flattenArray(cam_mtx.transpose());
+	
+	for (let object of objects) {
+		if (object instanceof GLW.Mesh) {
+			this.renderObject(object, cam_mtx);
+		}
+	}
+};
+
+GLW.Context.prototype.renderObject = function (object, cam_mtx) {
+	var glc = this._glcontext;
+	
+	var geometry = object.geometry;
+	var material = object.material;
+	
+	if (!geometry.buffers_built) geometry.buildBuffers();
+	if (!material.shaders_compiled) material.compileShaders();
+	
+	glc.useProgram(material.program);
+	glc.bindBuffer(glc.ELEMENT_ARRAY_BUFFER, geometry.indices);
+	
+	var used_attr_locations = [];
+	for (let [attr_name, geo_attr] of geometry.attributes) {
+		var prg_attr = material.program_attributes[attr_name];
+		if (prg_attr) {
+			var attr_loc = material.attribute_locations[attr_name];
+			used_attr_locations.push(attr_loc);
+		}
+	}
+	
+	for (var i = 0; i < used_attr_locations.length; i++) {
+		glc.enableVertexAttribArray(used_attr_locations[i]);
+	}
+	
+	for (let [attr_name, geo_attr] of geometry.attributes) {
+		var prg_attr = material.program_attributes[attr_name];
+		if (prg_attr) {
+			var attr_loc = material.attribute_locations[attr_name];
+			var size = GLW.Context.getActiveSize(glc, prg_attr);
+			glc.bindBuffer(glc.ARRAY_BUFFER, geo_attr.buffer);
+			glc.vertexAttribPointer(attr_loc, size, glc.FLOAT, false, 0, 0);
+		}
+	}
+	
+	for (let [uni_name, mtrl_uni] of material.uniforms) {
+		var prg_uni = material.program_uniforms[uni_name];
+		if (prg_uni) {
+			var uni_loc = material.uniform_locations[uni_name];
+			var size = GLW.Context.getActiveSize(glc, uni_attr);
+			
+		}
+	}
+	
+	var gl_obj_matrix = WGLW.flattenArray(obj_mat.transpose().data);
+	glc.uniformMatrix4fv(this.uniforms.mesh.obj_matrix, false, new Float32Array(gl_obj_matrix));
+	
+	glc.drawElements(glc.TRIANGLES, geometry.index_count, glc.UNSIGNED_SHORT, 0);
+	
+	for (var i = 0; i < used_attr_locations.length; i++) {
+		glc.disableVertexAttribArray(used_attr_locations[i]);
+	}
+};
+
+GLW.Context.getActiveSize = function (glc, active) {
+	var typesize = 1;
+	
+	switch (active.type) {
+		case glc.FLOAT_VEC2:
+		case glc.INT_VEC2:
+		case glc.BOOL_VEC2:
+			typesize = 2;
+			break;
+		case glc.FLOAT_VEC3:
+		case glc.INT_VEC3:
+		case glc.BOOL_VEC3:
+			typesize = 3;
+			break;
+		case glc.FLOAT_VEC4:
+		case glc.INT_VEC4:
+		case glc.BOOL_VEC4:
+			typesize = 4;
+			break;
+		case glc.FLOAT_MAT2:
+			typesize = 4;
+			break;
+		case glc.FLOAT_MAT3:
+			typesize = 9;
+			break;
+		case glc.FLOAT_MAT4:
+			typesize = 16;
+			break;
+	}
+	
+	return typesize*active.size
+};
+
+GLW.Context.flattenArray = function(array) {
+	var flat = [];
+	GLW.Context.flattenArray.flattenRecursively(array, flat);
+	return flat;
+}
+
+GLW.Context.flattenArray.flattenRecursively = function(array, flat) {
+	for (var id in array) {
+		var val = array[id];
+		if (val instanceof Array) {
+			GLW.Context.flattenArray.flattenRecursively(val, flat);
+		} else {
+			flat[flat.length] = val;
+		}
+	}
+}
