@@ -8,3 +8,7 @@ IDFAPP.FractalBuilder = function (scene, params) {
 
 IDFAPP.FractalBuilder.prototype = Object.create(Object.prototype);
 IDFAPP.FractalBuilder.prototype.constructor = IDFAPP.FractalBuilder;
+
+IDFAPP.FractalBuilder.prototype.generate = function () {
+    throw "Must be implemented by inheheriting class.";
+};

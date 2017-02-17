@@ -20,6 +20,7 @@ IDFAPP.Core.prototype = {
                 this.current_fractal = new IDFAPP.FractalBuilderAln(this.view3d.scene, params);
                 break;
             case "fractal-l_system":
+                this.current_fractal = new IDFAPP.FractalLSystem(this.view3d.scene, params);
                 break;
         }
     }

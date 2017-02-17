@@ -1,29 +1,36 @@
 /* global IDFAPP, THREE */
 
-IDFAPP.FractalLSystem = function (iterations) {
-    IDFAPP.BaseFractal.call(this);
+IDFAPP.FractalLSystem = function (scene, params) {
+    IDFAPP.FractalBuilder.call(this);
 
     //this.generate(iterations);
 
     this._params = {
         rules: {
             axiom: "F",
-            rule: "-F--L+FF+[LF]--F[F+-F[-F-F++F]]"
+            main: "F[--0F+0+F|F3F]",
+            secondary: [
+                "F-F[-F+F[LL1LL1LL]]++F[+F[LLLLLLLL]]--F[+F[LLLL1LL]]",
+                "F+F+F+F+F+FFFFFL[22]FFFF",
+                "FFFFFF333FFF",
+                "FFFFF00FFFFF"
+            ]
         },
-        iterations: iterations,
-        theta: 18,
+        iterations: 3,
+        theta: 25,
         scale: 1,
-        angle: 0
+        angleInitial: 5
     };
 
     var material = new THREE.LineBasicMaterial({color: 0x333333});
     var line_geometry = new THREE.Geometry();
     line_geometry = this._construct(line_geometry, new THREE.Vector3(0, 0, 0));
     var plant = new THREE.Line(line_geometry, material, THREE.LinePieces);
-    this.add(plant);
+
+    scene.add(plant);
 };
 
-IDFAPP.FractalLSystem.prototype = Object.create(IDFAPP.BaseFractal.prototype);
+IDFAPP.FractalLSystem.prototype = Object.create(IDFAPP.FractalBuilder.prototype);
 IDFAPP.FractalLSystem.prototype.constructor = IDFAPP.FractalLSystem;
 
 IDFAPP.FractalLSystem.prototype.generate = function () {
@@ -39,18 +46,24 @@ IDFAPP.FractalLSystem.prototype._generateAxiomTree = function () {
         var m = tree.length;
         var extension = "";
         for (var j = 0; j < m; j++) {
-            switch (tree[j]) {
-                case "F":
-                    extension += this._params.rules.rule;
-                    break;
-                default:
-                    extension += tree[j];
-                    break;
+            var isSub = tree[j].match("[0-9]");
+            if (isSub) {
+                extension += (this._params.rules.secondary[parseInt(isSub[0]) || 0]) || "";
+            } else {
+                switch (tree[j]) {
+                    case "F":
+                        extension += this._params.rules.main;
+                        break;
+                    default:
+                        extension += tree[j];
+                        break;
+                }
             }
         }
         tree = extension;
     }
 
+    console.log(tree);
     return tree;
 };
 
@@ -66,7 +79,7 @@ IDFAPP.FractalLSystem.prototype._construct = function (geometry, initial) {
 
     var theta = this._params.theta * Math.PI / 180;
     var scale = this._params.scale;
-    var angle = this._params.angle * Math.PI / 180;
+    var angle = this._params.angleInitial * Math.PI / 180;
 
     var rotation = 0, deg45 = 45 * Math.PI / 180;
 
@@ -118,6 +131,9 @@ IDFAPP.FractalLSystem.prototype._construct = function (geometry, initial) {
             case "]":
                 startpoint.copy(stack.vertex.pop().clone());
                 angle = stack.angle.pop();
+                break;
+            case "|":
+                angle = -angle;
                 break;
         }
     }
