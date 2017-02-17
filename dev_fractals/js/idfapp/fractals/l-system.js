@@ -3,8 +3,6 @@
 IDFAPP.FractalLSystem = function (scene, params) {
     IDFAPP.FractalBuilder.call(this);
 
-    //this.generate(iterations);
-
     this._params = {
         rules: {
             axiom: "F",
@@ -22,7 +20,7 @@ IDFAPP.FractalLSystem = function (scene, params) {
         angleInitial: 5
     };
 
-    var material = new THREE.LineBasicMaterial({color: 0x333333});
+    var material = new THREE.LineBasicMaterial({color: 0x333333, wireframe: true});
     var line_geometry = new THREE.Geometry();
     line_geometry = this._construct(this._params, line_geometry, new THREE.Vector3(0, 0, 0));
     var plant = new THREE.Line(line_geometry, material, THREE.LinePieces);
