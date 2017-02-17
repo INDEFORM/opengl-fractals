@@ -71,6 +71,12 @@ IDFAPP.Scene.prototype._updateCamera = function () {
         y = 1;
     }
 
+    if (state.PageUp === true) {
+        this._camera.position.data[2] -= speed;
+    } else if (state.PageDown === true) {
+        this._camera.position.data[2] += speed;
+    }
+
     if (x !== 0 || y !== 0) {
         var len = Math.sqrt(x * x + y * y) / speed;
 

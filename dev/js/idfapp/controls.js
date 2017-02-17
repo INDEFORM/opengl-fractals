@@ -5,14 +5,18 @@ IDFAPP.Controls = function () {
         ArrowUp: false,
         ArrowDown: false,
         ArrowLeft: false,
-        ArrowRight: false
+        ArrowRight: false,
+        PageUp: false,
+        PageDown: false
     };
 
     this._inverseKeys = {
         ArrowUp: "ArrowDown",
         ArrowDown: "ArrowUp",
         ArrowLeft: "ArrowRight",
-        ArrowRight: "ArrowLeft"
+        ArrowRight: "ArrowLeft",
+        PageUp: "PageDown",
+        PageDown: "PageUp"
     };
 
     this._actionStack = [];
@@ -31,6 +35,7 @@ IDFAPP.Controls.prototype = {
                 this._keysState[key] = true;
             }
         }
+       
     },
     _handleKeyUp: function (key) {
         if (this._keysState[key] !== undefined)
