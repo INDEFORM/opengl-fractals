@@ -118,18 +118,12 @@ IDFAPP.Scene.prototype._getEquation = function (eqation) {
         {
             rules: {
                 axiom: "F",
-                main: "F+[F-F]+F",
-                secondary: [
-                    "F-[[0]+0]+F[+|F0]-0",
-                    "F+F+F+F+F+FFFFFL[22]FFFF",
-                    "FFFFFF333FFF",
-                    "FFFFF00FFFFF"
-                ]
+                main: "F+[F-L-F]+F"
             },
             iterations: 3,
             theta: 22.5,
             scale: 1,
-            angleInitial: 5
+            angleInitial: 0
         },
         /*
          * Equation 2.
@@ -140,15 +134,13 @@ IDFAPP.Scene.prototype._getEquation = function (eqation) {
                 main: "FF+[+F-F[F0|F0]-0]-[-F+F+F]",
                 secondary: [
                     "F-[[0]+0]+F[+|F0]-0",
-                    "F+F+F+F+F+FFFFFL[22]FFFF",
-                    "FFFFFF333FFF",
-                    "FFFFF00FFFFF"
+                    "F+F+F+F+F+FFFFFL[1]FFFF"
                 ]
             },
             iterations: 3,
-            theta: 22.5,
-            scale: 1,
-            angleInitial: 5
+            theta: 45,
+            scale: 0.2,
+            angleInitial: 0
         },
         /*
          * Equation 3.
@@ -156,39 +148,18 @@ IDFAPP.Scene.prototype._getEquation = function (eqation) {
         {
             rules: {
                 axiom: "F",
-                main: "F+[F-F]+F",
-                //main: "FF+[+F-F[F0|F0]-0]-[-F+F+F]",
+                main: "F|FFF+[+F-F[F0|F0]-0]-[-F+F+F]",
                 secondary: [
-                    "F-[[0]+0]+F[+|F0]-0",
+                    "F-[[0]+01]+F[+|F0]-0",
                     "F+F+F+F+F+FFFFFL[22]FFFF",
-                    "FFFFFF333FFF",
-                    "FFFFF00FFFFF"
+                    "FFF|+FF-F3[+3]3FFF",
+                    "FFF[FF00FF]FFF"
                 ]
             },
             iterations: 3,
-            theta: 22.5,
-            scale: 1,
-            angleInitial: 5
-        },
-        /*
-         * Equation 3.
-         */
-        {
-            rules: {
-                axiom: "F",
-                main: "F+[F-F]+F",
-                //main: "FF+[+F-F[F0|F0]-0]-[-F+F+F]",
-                secondary: [
-                    "F-[[0]+0]+F[+|F0]-0",
-                    "F+F+F+F+F+FFFFFL[22]FFFF",
-                    "FFFFFF333FFF",
-                    "FFFFF00FFFFF"
-                ]
-            },
-            iterations: 3,
-            theta: 22.5,
-            scale: 1,
-            angleInitial: 5
+            theta: 22.6,
+            scale: 0.1,
+            angleInitial: -14
         },
         /*
          * Equation 4.
@@ -196,19 +167,33 @@ IDFAPP.Scene.prototype._getEquation = function (eqation) {
         {
             rules: {
                 axiom: "F",
-                main: "F+[F-F]+F",
-                //main: "FF+[+F-F[F0|F0]-0]-[-F+F+F]",
+                main: "F+[+F0-1-0F+]+F",
                 secondary: [
-                    "F-[[0]+0]+F[+|F0]-0",
-                    "F+F+F+F+F+FFFFFL[22]FFFF",
-                    "FFFFFF333FFF",
-                    "FFFFF00FFFFF"
+                    "F[FF+0L0+FF]F",
+                    "0[0+F[1-F-1]F+0]0"
+                ]
+            },
+            iterations: 3,
+            theta: 22.5,
+            scale: 0.5,
+            angleInitial: 0
+        },
+        /*
+         * Equation 5.
+         */
+        {
+            rules: {
+                axiom: "F",
+                main: "F+[L0]+F",
+                secondary: [
+                    "-FFLFF+[L0L[11FFFF++++1]]+LF",
+                    "F+[L0]+F"
                 ]
             },
             iterations: 3,
             theta: 22.5,
             scale: 1,
-            angleInitial: 5
+            angleInitial: 0
         },
         /*
          * Equation 6.
@@ -216,18 +201,15 @@ IDFAPP.Scene.prototype._getEquation = function (eqation) {
         {
             rules: {
                 axiom: "F",
-                main: "F+[F-F]+F",
-                //main: "FF+[+F-F[F0|F0]-0]-[-F+F+F]",
+                main: "F[+0]F[-X]+X",
                 secondary: [
-                    "F-[[0]+0]+F[+|F0]-0",
-                    "F+F+F+F+F+FFFFFL[22]FFFF",
-                    "FFFFFF333FFF",
-                    "FFFFF00FFFFF"
+                    "F+[FL1]",
+                    "F[F+L0F-F]F"
                 ]
             },
             iterations: 3,
-            theta: 22.5,
-            scale: 1,
+            theta: 13,
+            scale: 0.5,
             angleInitial: 5
         },
         /*
@@ -236,19 +218,18 @@ IDFAPP.Scene.prototype._getEquation = function (eqation) {
         {
             rules: {
                 axiom: "F",
-                main: "F+[F-F]+F",
-                //main: "FF+[+F-F[F0|F0]-0]-[-F+F+F]",
+                main: "FF+[+F-F[F0|F0]-0]-[-F+F+F]",
                 secondary: [
-                    "F-[[0]+0]+F[+|F0]-0",
+                    "F-[[L1]+0]+F[+|F0]-0",
                     "F+F+F+F+F+FFFFFL[22]FFFF",
-                    "FFFFFF333FFF",
+                    "F++F[F|FFF33]3FFF",
                     "FFFFF00FFFFF"
                 ]
             },
             iterations: 3,
-            theta: 22.5,
-            scale: 1,
-            angleInitial: 5
+            theta: 88,
+            scale: 0.5,
+            angleInitial: -45
         },
         /*
          * Equation 8.
@@ -256,13 +237,13 @@ IDFAPP.Scene.prototype._getEquation = function (eqation) {
         {
             rules: {
                 axiom: "F",
-                main: "F+[F-F]+F",
-                //main: "FF+[+F-F[F0|F0]-0]-[-F+F+F]",
+                main: "F+[FL+0-F]+F",
                 secondary: [
-                    "F-[[0]+0]+F[+|F0]-0",
+                    "F-4[-4]++4F[L--F[LF+1--1F]]",
                     "F+F+F+F+F+FFFFFL[22]FFFF",
-                    "FFFFFF333FFF",
-                    "FFFFF00FFFFF"
+                    "F+F+F+FF[-F3-3-3]FFF",
+                    "FF[F+F+F0]0FFFFF",
+                    "+F[---FLL]L++F|FF+F"
                 ]
             },
             iterations: 3,
