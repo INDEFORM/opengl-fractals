@@ -8,23 +8,23 @@ IDFAPP.FractalLSystem = function (scene, params) {
     this._params = {
         rules: {
             axiom: "F",
-            main: "F[--0F+0+F|F3F]",
+            main: "FF+[+F-F[F0|F0]-0]-[-F+F+F]",
             secondary: [
-                "F-F[-F+F[LL1LL1LL]]++F[+F[LLLLLLLL]]--F[+F[LLLL1LL]]",
+                "F-[[0]+X]+F[+|F0]-0",
                 "F+F+F+F+F+FFFFFL[22]FFFF",
                 "FFFFFF333FFF",
                 "FFFFF00FFFFF"
             ]
         },
         iterations: 3,
-        theta: 25,
+        theta: 22.5,
         scale: 1,
         angleInitial: 5
     };
 
     var material = new THREE.LineBasicMaterial({color: 0x333333});
     var line_geometry = new THREE.Geometry();
-    line_geometry = this._construct(line_geometry, new THREE.Vector3(0, 0, 0));
+    line_geometry = this._construct(this._params, line_geometry, new THREE.Vector3(0, 0, 0));
     var plant = new THREE.Line(line_geometry, material, THREE.LinePieces);
 
     scene.add(plant);
@@ -37,22 +37,21 @@ IDFAPP.FractalLSystem.prototype.generate = function () {
     this._buildPrimitive();
 };
 
-
-IDFAPP.FractalLSystem.prototype._generateAxiomTree = function () {
-    var tree = this._params.rules.axiom;
+IDFAPP.FractalLSystem.prototype._generateAxiomTree = function (params) {
+    var tree = params.rules.axiom;
 
     //Create iterations
-    for (var i = 0; i < this._params.iterations; i++) {
+    for (var i = 0; i < params.iterations; i++) {
         var m = tree.length;
         var extension = "";
         for (var j = 0; j < m; j++) {
             var isSub = tree[j].match("[0-9]");
             if (isSub) {
-                extension += (this._params.rules.secondary[parseInt(isSub[0]) || 0]) || "";
+                extension += (params.rules.secondary[parseInt(isSub[0]) || 0]) || "";
             } else {
                 switch (tree[j]) {
                     case "F":
-                        extension += this._params.rules.main;
+                        extension += params.rules.main;
                         break;
                     default:
                         extension += tree[j];
@@ -63,23 +62,22 @@ IDFAPP.FractalLSystem.prototype._generateAxiomTree = function () {
         tree = extension;
     }
 
-    console.log(tree);
     return tree;
 };
 
-IDFAPP.FractalLSystem.prototype._construct = function (geometry, initial) {
+IDFAPP.FractalLSystem.prototype._construct = function (params, geometry, initial) {
     initial = initial || new THREE.Vector3();
 
-    var axiomTree = this._generateAxiomTree();
+    var axiomTree = this._generateAxiomTree(params);
 
     var stack = {
         angle: [],
         vertex: []
     };
 
-    var theta = this._params.theta * Math.PI / 180;
-    var scale = this._params.scale;
-    var angle = this._params.angleInitial * Math.PI / 180;
+    var theta = (params.theta || 0) * Math.PI / 180;
+    var scale = (params.scale || 0);
+    var angle = (params.angleInitial || 0) * Math.PI / 180;
 
     var rotation = 0, deg45 = 45 * Math.PI / 180;
 
