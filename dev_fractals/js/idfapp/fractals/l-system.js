@@ -8,16 +8,16 @@ IDFAPP.FractalLSystem = function (scene, params) {
     this._params = {
         rules: {
             axiom: "F",
-            main: "F[--0F+0+F|F3F]",
+            main: "FF+[+F-F[F0|F0]-0]-[-F+F+F]",
             secondary: [
-                "F-F[-F+F[LL1LL1LL]]++F[+F[LLLLLLLL]]--F[+F[LLLL1LL]]",
+                "F-[[0]+X]+F[+|F0]-0",
                 "F+F+F+F+F+FFFFFL[22]FFFF",
                 "FFFFFF333FFF",
                 "FFFFF00FFFFF"
             ]
         },
         iterations: 3,
-        theta: 25,
+        theta: 22.5,
         scale: 1,
         angleInitial: 5
     };
