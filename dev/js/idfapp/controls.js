@@ -34,7 +34,6 @@ IDFAPP.Controls.prototype = {
             this._keysState[key] = false;
     },
     handleEvent: function (evt) {
-        //console.log(evt);
         switch (evt.type) {
             case "keydown":
                 this._handleKeyDown(evt.key);
